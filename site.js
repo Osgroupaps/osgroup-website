@@ -1,6 +1,6 @@
 (function(){
 if(window.CookieConsent)return;
-var CFG={key:'cc_consent',ver:1,months:12,accent:'#1f6f8b',dark:'#233137',name:'OS Group',policy:'',mail:'kontakt@osgroup.dk'};
+var CFG={key:'cc_consent',ver:1,months:12,accent:'#1f6f8b',dark:'#233137',name:'OS Group',policy:'/privatlivspolitik/',mail:'kontakt@osgroup.dk'};
 var CATS=[
 {id:'nodvendige',t:'Nødvendige',d:'Gør siden og kontaktformularen brugbar og husker dit valg her. Kan ikke slås fra.',lock:1},
 {id:'praeferencer',t:'Præferencer',d:'Husker valg som sprog og visning. Bruges ikke i dag.'},
@@ -79,3 +79,7 @@ nav.querySelectorAll('a').forEach(function(a){var c=a.cloneNode(true);c.style.cs
 var h=btn.closest('header')||nav.parentElement;h.style.position='relative';h.appendChild(p);
 btn.addEventListener('click',function(){p.hidden=!p.hidden;btn.setAttribute('aria-expanded',String(!p.hidden))})}
 })();
+(function(){
+var f=document.querySelector('footer');if(!f||f.querySelector('[data-cookie-settings]')||f.querySelector('a[href="/privatlivspolitik/"]'))return;
+var box=f.querySelector('div > div')||f;var p=document.createElement('p');
+p.innerHTML='<a href="/privatlivspolitik/" class="font-bold underline-offset-4 hover:underline">Privatlivspolitik</a> · <a href="#" data-cookie-settings class="font-bold underline-offset-4 hover:underline">Cookieindstillinger</a>';box.appendChild(p)})();
