@@ -1,0 +1,30 @@
+name: Synkronisér jobopslag fra udbudsplatformen
+# Opdaterer /aabne-stillinger/ ud fra aktive udbud på udbud.osgroup.dk
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [udbud-changed]
+permissions:
+  contents: write
+concurrency:
+  group: sync-jobs
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Hent opslag og byg siden
+        run: |
+          python3 tools/sync_jobs.py
+          python3 tools/build_jobs.py
+      - name: Gem ændringer
+        run: |
+          if git diff --quiet; then echo "Ingen ændringer"; exit 0; fi
+          git config user.name "osgroup-bot"
+          git config user.email "kontakt@osgroup.dk"
+          git add jobs.json aabne-stillinger/index.html
+          git commit -m "Jobopslag opdateret fra udbudsplatformen"
+          git push
